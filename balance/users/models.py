@@ -20,7 +20,7 @@ class Users(AbstractUser):
         max_length=MAX_LENGTH,
     )
     balance = models.PositiveIntegerField(
-        help_text='Баланс пользователя'
+        help_text='Баланс пользователя',
     )
 
     class Meta:
