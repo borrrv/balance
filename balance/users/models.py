@@ -7,20 +7,23 @@ class Users(AbstractUser):
     email = models.EmailField(
         blank=False,
         unique=True,
-        help_text='Введите вашу почту'
+        help_text='Введите вашу почту',
+        verbose_name='Email',
     )
     first_name = models.CharField(
         blank=False,
         help_text='Введите ваше имя',
         max_length=MAX_LENGTH,
+        verbose_name='Имя пользователя',
     )
     last_name = models.CharField(
         blank=False,
         help_text='Введите вашу фамилию',
         max_length=MAX_LENGTH,
+        verbose_name='Фамилия пользователя'
     )
     balance = models.PositiveIntegerField(
-        help_text='Баланс пользователя',
+        verbose_name='Баланс пользователя',
     )
 
     class Meta:

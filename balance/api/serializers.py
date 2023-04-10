@@ -4,6 +4,7 @@ from rest_framework import serializers
 
 class CurrentUserSerializer(serializers.ModelSerializer):
     """Сериалайзер для вывода информации о пользователе"""
+
     class Meta:
         model = Users
         fields = (
@@ -16,11 +17,13 @@ class CurrentUserSerializer(serializers.ModelSerializer):
 
 
 class UpBalanceUserSerializer(serializers.ModelSerializer):
-    """Сериалайзер для пополнения """
+    """Сериалайзер для пополнения баланса пользователя"""
+
     class Meta:
         model = Users
         fields = (
             'id',
+            'email',
             'balance',
         )
 

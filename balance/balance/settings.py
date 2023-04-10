@@ -130,7 +130,7 @@ AUTH_USER_MODEL = 'users.Users'
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny',
+        'djoser.permissions.CurrentUserOrAdmin',
     ],
 
     'DEFAULT_AUTHENTICATION_CLASSES': [
