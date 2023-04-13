@@ -24,6 +24,7 @@ class Users(AbstractUser):
     )
     balance = models.PositiveIntegerField(
         verbose_name='Баланс пользователя',
+        default=0,
     )
 
     class Meta:

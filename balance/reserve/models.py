@@ -13,6 +13,12 @@ class Service(models.Model):
         verbose_name='Цена услуги'
     )
 
+    class Meta:
+        verbose_name_plural = 'Услуги'
+
+    def __str__(self):
+        return f'{self.name}'
+
 
 class Order(models.Model):
     price = models.PositiveIntegerField(
@@ -21,36 +27,59 @@ class Order(models.Model):
     owner = models.ForeignKey(
         Users,
         on_delete=models.CASCADE,
-        verbose_name='Заказ пользователя',
+        verbose_name='Владелец заказа',
         related_name='order',
     )
-
-
-class ServiceUser(models.Model):
     service = models.ForeignKey(
         Service,
         on_delete=models.CASCADE,
-        verbose_name='Наименование услуги',
-        related_name='services',
+        related_name='order',
+        verbose_name='Услуга'
     )
-    users = models.ForeignKey(
+    total = models.PositiveIntegerField(
+        verbose_name='Итого',
+        default=0,
+    )
+
+    class Meta:
+        verbose_name_plural = 'Заказы'
+    
+    def __str__(self):
+        return f'{self.service} - {self.price} р.'
+
+class Reserve(models.Model):
+    user = models.ForeignKey(
         Users,
         on_delete=models.CASCADE,
-        verbose_name='Пользователь с услугой',
-        related_name='services',
+        related_name='reserve',
+    )
+    price = models.ForeignKey(
+        Order,
+        on_delete=models.CASCADE,
+        related_name='reserve'
     )
 
+    def __str__(self) -> str:
+        return f'{self.user.username}, {self.price.price}'
 
-class OrderUsers(models.Model):
+
+class Revenue(models.Model):
+    user = models.ForeignKey(
+        Users,
+        on_delete=models.CASCADE,
+        related_name='revenue'
+    )
+    service = models.ForeignKey(
+        Service,
+        on_delete=models.CASCADE,
+        related_name='revenue',
+    )
     order = models.ForeignKey(
         Order,
         on_delete=models.CASCADE,
-        verbose_name='Заказ пользователя',
-        related_name='orders',
+        related_name='revenue',
     )
-    users = models.ForeignKey(
-        Users,
-        on_delete=models.CASCADE,
-        verbose_name='Пользователь',
-        related_name='orders',
-    )
+    price = models.PositiveIntegerField()
+
+    def __str__(self):
+        return f'{self.user.username}, {self.service.name}'
