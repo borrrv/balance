@@ -17,7 +17,7 @@ class Service(models.Model):
         verbose_name_plural = 'Услуги'
 
     def __str__(self):
-        return f'{self.name}'
+        return f'{self.name} - {self.price}'
 
 
 class Order(models.Model):
@@ -37,7 +37,6 @@ class Order(models.Model):
         verbose_name='Услуга',
     )
 
-
     class Meta:
         verbose_name_plural = 'Заказы'
     
@@ -56,7 +55,7 @@ class Reserve(models.Model):
         default=0,
     )
     def __str__(self):
-        return f'{self.user.username}, {self.price.price}'
+        return f'{self.user.username}, {self.reserve_balance}'
 
 
 class Revenue(models.Model):
@@ -65,14 +64,12 @@ class Revenue(models.Model):
         on_delete=models.CASCADE,
         related_name='revenue'
     )
-    service = models.ForeignKey(
-        Service,
-        on_delete=models.CASCADE,
+    order = models.ManyToManyField(
+        Order,
         related_name='revenue',
     )
-    order = models.ForeignKey(
-        Order,
-        on_delete=models.CASCADE,
+    service = models.ManyToManyField(
+        Service,
         related_name='revenue',
     )
     price = models.PositiveIntegerField()

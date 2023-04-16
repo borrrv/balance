@@ -94,3 +94,16 @@ class ReserveSerializer(serializers.ModelSerializer):
             'user',
             'reserve_balance',
         )
+
+class RevenueSerializer(serializers.ModelSerializer):
+    """Сериалайзер для признания выручки(StringRelatedField не работает
+    без него отдает нормально id)"""
+    service = serializers.StringRelatedField(read_only=True, many=True)
+
+    class Meta:
+        model = Revenue
+        fields = (
+            'user',
+            'price',
+            'service',
+        )
