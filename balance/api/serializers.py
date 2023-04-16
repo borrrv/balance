@@ -1,13 +1,13 @@
 from users.models import Users
 from rest_framework import serializers
-from reserve.models import Service, Order
+from reserve.models import Service, Order, Reserve, Revenue
 
 
 class CurrentUserSerializer(serializers.ModelSerializer):
     """Сериалайзер для вывода информации о пользователе"""
 
     order = serializers.StringRelatedField(read_only=True, many=True)
-    #total = serializers.IntegerField()
+
     class Meta:
         model = Users
         fields = (
@@ -15,12 +15,13 @@ class CurrentUserSerializer(serializers.ModelSerializer):
             'email',
             'balance',
             'order',
-           # 'total',
+            'total',
         )
 
 
 class UpBalanceUserSerializer(serializers.ModelSerializer):
     """Сериалайзер для пополнения баланса пользователя"""
+
     email = serializers.EmailField(required=False)
 
     class Meta:
@@ -54,7 +55,7 @@ class ServiceSerializer(serializers.ModelSerializer):
 
 class ServiceAddOrderSerializer(serializers.ModelSerializer):
     """Сериалайзер для добавление услуги в заказ"""
-
+   
     class Meta:
         model = Order
         fields = (
@@ -64,17 +65,16 @@ class ServiceAddOrderSerializer(serializers.ModelSerializer):
             'price',
         )
 
-    def to_representation(self, instance, validated_data):
-        # price = validated_data.get('price')
-        # instance.total += instance.price
-        # instance.save()
+    def to_representation(self, instance):
         context = {'request': self.context.get('request')}
         return ServiceSerializer(instance.service, context=context).data
 
 
 class OrderForUserSerializer(serializers.ModelSerializer):
     """Сериалайзер для просмотра заказов пользователя"""
+
     service = serializers.StringRelatedField(read_only=True)
+
     class Meta:
         model = Order
         fields = (
@@ -82,5 +82,15 @@ class OrderForUserSerializer(serializers.ModelSerializer):
             'price',
             'service',
             'owner',
-            'total',
+        )
+
+
+class ReserveSerializer(serializers.ModelSerializer):
+    """Сериалайзер для резервирования и просмотра средств на отдельном счете"""
+
+    class Meta:
+        model = Reserve
+        fields = (
+            'user',
+            'reserve_balance',
         )

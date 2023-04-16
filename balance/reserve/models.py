@@ -34,12 +34,9 @@ class Order(models.Model):
         Service,
         on_delete=models.CASCADE,
         related_name='order',
-        verbose_name='Услуга'
+        verbose_name='Услуга',
     )
-    total = models.PositiveIntegerField(
-        verbose_name='Итого',
-        default=0,
-    )
+
 
     class Meta:
         verbose_name_plural = 'Заказы'
@@ -47,19 +44,18 @@ class Order(models.Model):
     def __str__(self):
         return f'{self.service} - {self.price} р.'
 
+
+
 class Reserve(models.Model):
     user = models.ForeignKey(
         Users,
         on_delete=models.CASCADE,
         related_name='reserve',
     )
-    price = models.ForeignKey(
-        Order,
-        on_delete=models.CASCADE,
-        related_name='reserve'
+    reserve_balance = models.PositiveIntegerField(
+        default=0,
     )
-
-    def __str__(self) -> str:
+    def __str__(self):
         return f'{self.user.username}, {self.price.price}'
 
 
@@ -83,3 +79,4 @@ class Revenue(models.Model):
 
     def __str__(self):
         return f'{self.user.username}, {self.service.name}'
+    

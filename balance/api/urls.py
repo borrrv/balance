@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .views import UpBalanceUserApiView, ServiceViewSet, UserNewViewSet
+from .views import UpBalanceUserUpdate, ServiceViewSet, UserNewViewSet
 from rest_framework.routers import DefaultRouter
 
 
@@ -13,5 +13,5 @@ urlpatterns = [
     path('', include(router.urls)),
     path('auth/', include('djoser.urls.authtoken')),
     path('', include('djoser.urls')),
-    path('money/<int:pk>/', UpBalanceUserApiView.as_view()),
+    path('money/<int:pk>/', UpBalanceUserUpdate.as_view()),
 ]

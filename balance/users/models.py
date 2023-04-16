@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from balance.settings import MAX_LENGTH
 
-
 class Users(AbstractUser):
     email = models.EmailField(
         blank=False,
@@ -24,6 +23,10 @@ class Users(AbstractUser):
     )
     balance = models.PositiveIntegerField(
         verbose_name='Баланс пользователя',
+        default=0,
+    )
+    total = models.PositiveIntegerField(
+        verbose_name='Итого',
         default=0,
     )
 
