@@ -64,15 +64,10 @@ class Revenue(models.Model):
         on_delete=models.CASCADE,
         related_name='revenue'
     )
-    order = models.ManyToManyField(
-        Order,
-        related_name='revenue',
-    )
-    service = models.ManyToManyField(
-        Service,
-        related_name='revenue',
-    )
     price = models.PositiveIntegerField()
+    service = models.CharField(
+        max_length=150,
+    )
 
     def __str__(self):
         return f'{self.user.username}, {self.service.name}'

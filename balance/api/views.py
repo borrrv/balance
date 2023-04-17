@@ -35,24 +35,30 @@ class UserNewViewSet(UserViewSet):
         return Response(serializer.data)
     
     """Резервирование средств на отдельном счете"""
-    @action(detail=True, methods=['post', 'get'])
-    def reserve(self, request, id):
+    @permission_classes([IsOwner])
+    @action(detail=False, methods=['post', 'get'])
+    def reserve(self, request, id=None):
         user = self.request.user
         total = get_object_or_404(Users, username=user.username)
         reserve = Reserve.objects.filter(user_id=user.id)
+        orders = Order.objects.filter(owner_id=user.id)
         if request.method == 'POST':
             if total.balance >= total.total:
-                if not reserve.exists():
-                    total.balance -= total.total
-                    total.save()
-                    serializer = ReserveSerializer(
-                        data={'user': user.id, 'reserve_balance': total.total}
-                    )
-                    serializer.is_valid(raise_exception=True)
-                    serializer.save()
-                    return Response(serializer.data, status=HTTP_201_CREATED)
+                if orders.exists():
+                    if not reserve.exists():
+                        total.balance -= total.total
+                        total.save()
+                        serializer = ReserveSerializer(
+                            data={'user': user.id, 'reserve_balance': total.total}
+                        )
+                        serializer.is_valid(raise_exception=True)
+                        serializer.save()
+                        return Response(serializer.data, status=HTTP_201_CREATED)
+                    else:
+                        content = {'error': 'Данный заказ уже зарезервирован'}
+                        return Response(content, status=HTTP_400_BAD_REQUEST)
                 else:
-                    content = {'error': 'Данный заказ уже зарезервирован'}
+                    content = {'error': 'У вас нет активных заказов'}
                     return Response(content, status=HTTP_400_BAD_REQUEST)
             else:
                 content = {'error': 'Недостаточно средств на счете'}
@@ -69,16 +75,20 @@ class UserNewViewSet(UserViewSet):
     def revenue(self, request, id):
         price = get_object_or_404(Reserve, user_id=id)
         orders = Order.objects.filter(owner_id=id)
-        a = [o.service.name for o in orders]
-        print(a)
+        balance = Reserve.objects.filter(user_id=id)
+        total = get_object_or_404(Users, id=id)
+        balance.delete()
         serializer = RevenueSerializer(
             data={'price': price.reserve_balance,
                   'user': id,
-                  'service': a,
+                  'service': [o.service.name for o in orders],
                   },
         )
         serializer.is_valid(raise_exception=True)
         serializer.save()
+        total.total = 0
+        total.save()
+        orders.delete()
         return Response(serializer.data, status=HTTP_201_CREATED)
 
 
@@ -144,6 +154,7 @@ class RevenueListCreate(generics.ListAPIView):
         user = self.request.user
         price = get_object_or_404(Reserve, user_id=user.id)
         order = Order.objects.filter(owner_id=user.id)
+        print(order)
         serializer = RevenueSerializer(
             data={'price': price.reserve_balance}
         )
