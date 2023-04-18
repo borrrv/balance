@@ -1,8 +1,10 @@
 from django.db import models
+
 from users.models import Users
 
 
 class Service(models.Model):
+    """Модель услуг"""
     name = models.CharField(
         max_length=150,
         blank=False,
@@ -15,12 +17,19 @@ class Service(models.Model):
 
     class Meta:
         verbose_name_plural = 'Услуги'
+        constraints = [
+            models.UniqueConstraint(
+                fields=['name', 'price'],
+                name='unique_name_price'
+            )
+        ]
 
     def __str__(self):
         return f'{self.name} - {self.price}'
 
 
 class Order(models.Model):
+    """Модель заказов"""
     price = models.PositiveIntegerField(
         verbose_name='Цена заказа',
     )
@@ -39,13 +48,13 @@ class Order(models.Model):
 
     class Meta:
         verbose_name_plural = 'Заказы'
-    
-    def __str__(self):
-        return f'{self.service} - {self.price} р.'
 
+    def __str__(self):
+        return f'{self.service.name} - {self.price} р.'
 
 
 class Reserve(models.Model):
+    """Модель счета для резерва средств"""
     user = models.ForeignKey(
         Users,
         on_delete=models.CASCADE,
@@ -54,11 +63,13 @@ class Reserve(models.Model):
     reserve_balance = models.PositiveIntegerField(
         default=0,
     )
+
     def __str__(self):
         return f'{self.user.username}, {self.reserve_balance}'
 
 
 class Revenue(models.Model):
+    """Модель выручки"""
     user = models.ForeignKey(
         Users,
         on_delete=models.CASCADE,
@@ -71,4 +82,3 @@ class Revenue(models.Model):
 
     def __str__(self):
         return f'{self.user.username}, {self.service.name}'
-    

@@ -1,6 +1,8 @@
-from users.models import Users
 from rest_framework import serializers
-from reserve.models import Service, Order, Reserve, Revenue
+from rest_framework.validators import UniqueTogetherValidator
+
+from reserve.models import Order, Reserve, Revenue, Service
+from users.models import Users
 
 
 class CurrentUserSerializer(serializers.ModelSerializer):
@@ -41,7 +43,8 @@ class UpBalanceUserSerializer(serializers.ModelSerializer):
             instance.balance += balance
         instance.save()
         return instance
-    
+
+
 class ServiceSerializer(serializers.ModelSerializer):
     """Сериалайзер для вывода информации об услугах"""
 
@@ -53,9 +56,17 @@ class ServiceSerializer(serializers.ModelSerializer):
             'price',
         )
 
+        validators = [
+            UniqueTogetherValidator(
+                queryset=Service.objects.all(),
+                fields=('name', 'price')
+            )
+        ]
+
+
 class ServiceAddOrderSerializer(serializers.ModelSerializer):
     """Сериалайзер для добавление услуги в заказ"""
-   
+
     class Meta:
         model = Order
         fields = (
@@ -95,14 +106,31 @@ class ReserveSerializer(serializers.ModelSerializer):
             'reserve_balance',
         )
 
+
 class RevenueSerializer(serializers.ModelSerializer):
     """Сериалайзер для признания выручки"""
 
     service = serializers.JSONField()
+
     class Meta:
         model = Revenue
         fields = (
             'user',
             'price',
             'service',
+        )
+
+
+class TransactionSerializer(serializers.ModelSerializer):
+    """Сериалайзер для переводов средств другим пользователям"""
+
+    message = serializers.CharField(max_length=150, required=False)
+    transaction = serializers.IntegerField(required=False)
+
+    class Meta:
+        model = Users
+        fields = (
+            'balance',
+            'message',
+            'transaction',
         )

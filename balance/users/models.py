@@ -1,8 +1,11 @@
-from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.db import models
+
 from balance.settings import MAX_LENGTH
 
+
 class Users(AbstractUser):
+    """Абстрактная модель пользователя"""
     email = models.EmailField(
         blank=False,
         unique=True,
