@@ -75,4 +75,4 @@ api/users/2/transaction/
 - Djoser 2.1
 - PostgreSQL 15
 ### Автор
-![Vladislav](https://github.com/borrrv)
+[Vladislav](https://github.com/borrrv)
