@@ -76,6 +76,6 @@ api/users/2/transaction/
 ```
 ## Планируется сделать
 - Настроить workflow.
-- Docker и docker-compose для поднятия и развертывания dev-среды.
+- Использовать docker и docker-compose для поднятия и развертывания dev-среды.
 ### Автор
 [Vladislav](https://github.com/borrrv)
