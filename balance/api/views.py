@@ -17,7 +17,7 @@ from .serializers import (CurrentUserSerializer, OrderForUserSerializer,
                           TransactionSerializer, UpBalanceUserSerializer)
 
 
-class CustomServiceViewSet(generics.ListCreateAPIView,
+class CustomServiceViewSet(generics.ListAPIView,
                            viewsets.GenericViewSet,):
     """Кастомный вьюсет для просмотра, удаления и добавления услуг в заказ"""
     pass

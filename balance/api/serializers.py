@@ -24,13 +24,10 @@ class CurrentUserSerializer(serializers.ModelSerializer):
 class UpBalanceUserSerializer(serializers.ModelSerializer):
     """Сериалайзер для пополнения баланса пользователя"""
 
-    email = serializers.EmailField(required=False)
-
     class Meta:
         model = Users
         fields = (
             'id',
-            'email',
             'balance',
         )
 

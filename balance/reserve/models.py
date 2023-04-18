@@ -5,6 +5,7 @@ from users.models import Users
 
 class Service(models.Model):
     """Модель услуг"""
+
     name = models.CharField(
         max_length=150,
         blank=False,
@@ -30,6 +31,7 @@ class Service(models.Model):
 
 class Order(models.Model):
     """Модель заказов"""
+
     price = models.PositiveIntegerField(
         verbose_name='Цена заказа',
     )
@@ -55,6 +57,7 @@ class Order(models.Model):
 
 class Reserve(models.Model):
     """Модель счета для резерва средств"""
+
     user = models.ForeignKey(
         Users,
         on_delete=models.CASCADE,
@@ -70,6 +73,7 @@ class Reserve(models.Model):
 
 class Revenue(models.Model):
     """Модель выручки"""
+
     user = models.ForeignKey(
         Users,
         on_delete=models.CASCADE,
