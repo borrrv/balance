@@ -9,20 +9,19 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),
 ]
-
 schema_view = get_schema_view(
-   openapi.Info(
-      title="Balance API",
-      default_version='v1',
-      description="Документация для приложения balance",
-      contact=openapi.Contact(email="vrboroday@yandex.ru"),
-      license=openapi.License(name="BSD License"),
-   ),
-   public=True,
-   permission_classes=(permissions.AllowAny,),
+    openapi.Info(
+        title="Balance API",
+        default_version='v1',
+        description="Документация для приложения balance",
+        contact=openapi.Contact(email="vrboroday@yandex.ru"),
+        license=openapi.License(name="BSD License"),
+    ),
+    public=True,
+    permission_classes=(permissions.AllowAny,),
 )
 
 urlpatterns += [
-   url(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0),
-       name='schema-redoc'),
+    url(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0),
+        name='schema-redoc'),
 ]
