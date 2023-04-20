@@ -6,8 +6,15 @@ services:
     volumes:
       - ./init-database.sh:/docker-entrypoint-initdb.d/init-database.sh
       - /var/lib/postgresql/data/
-    env_file:
-      - ./.env
+    environment:
+      - DB_ENGINE=django.db.backends.postgresql_psycopg2
+      - DB_NAME=balance
+      - POSTGRES_USER=balance_user
+      - POSTGRES_PASSWORD=postgres
+      - DB_HOST=db
+      - DB_PORT=5432
+    # env_file:
+    #   - ./.env
   web:
     build: .
     restart: always
