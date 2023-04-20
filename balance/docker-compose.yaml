@@ -24,8 +24,12 @@ services:
       - static_value:/app/static/
     depends_on:
       - db
-    env_file:
-      - ./.env
+    environment:
+      - SECRET_KEY = 'django-insecure-df6ic^_n55hqqr2low)@_*ve%618i%o(rfdi&imd%5ym$-*5bb'
+      - DEBUG = True
+      - ALLOWED_HOSTS = ['*']
+    # env_file:
+    #   - ./.env
   nginx:
     image: nginx:1.21.3-alpine
     ports:
