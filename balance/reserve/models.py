@@ -83,7 +83,7 @@ class Revenue(models.Model):
     service = models.CharField(
         max_length=150,
     )
-    
+
     class Meta:
         verbose_name_plural = 'Выручка'
 

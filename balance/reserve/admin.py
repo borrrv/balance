@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Order, Service, Revenue
+from .models import Order, Revenue, Service
 
 
 class ServiceAdmin(admin.ModelAdmin):
@@ -29,6 +29,7 @@ class RevenueAdmin(admin.ModelAdmin):
     search_fields = (
         'user',
     )
+
 
 admin.site.register(Revenue, RevenueAdmin)
 admin.site.register(Service, ServiceAdmin)
